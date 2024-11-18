@@ -11,13 +11,13 @@ class $modify(TheWraith, SecretLayer5) {
         std::string text = "";
     };
 
-    void onSubmit(cocos2d::CCObject* sender) {
+    void onSubmit(cocos2d::CCObject * sender) {
         this->m_fields->text = this->m_textInput->getString();
         std::transform(
-            this->m_fields->text.begin(), 
-            this->m_fields->text.end(), 
-            this->m_fields->text.begin(), 
-            [](unsigned char c){ return std::tolower(c); }
+            this->m_fields->text.begin(),
+            this->m_fields->text.end(),
+            this->m_fields->text.begin(),
+            [](unsigned char c) { return std::tolower(c); }
         );
 
         SecretLayer5::onSubmit(sender);
@@ -34,12 +34,23 @@ class $modify(TheWraith, SecretLayer5) {
     void showSoggyCat() {
         auto winSize = CCDirector::sharedDirector()->getWinSize();
         CCSprite* sprite = CCSprite::create("soggycat.png"_spr);
-        sprite->setPosition(ccp(winSize.width / 2, (winSize.height / 2) + 69));
-        sprite->setScale(0.2f);
+        sprite->setPosition(ccp(winSize.width / 2, winSize.height / 2));
+        sprite->setScaleX(winSize.width / sprite->getContentWidth());
+        sprite->setScaleY(winSize.height / sprite->getContentHeight());
 
         CCNode* rewardPage = as<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
         CCLayer* layer = as<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
-        layer->addChild(sprite);
+        layer->addChild(sprite, 10);
+    }
+
+    void closeSog() {
+        CCNode* rewardPage = static_cast<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
+        CCLayer* layer = static_cast<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
+        CCMenuItemSpriteExtra* wraithButton = static_cast<CCMenuItemSpriteExtra*>(this->getChildByType<CCMenu>(0)->getChildren()->lastObject());
+
+        rewardPage->removeFromParentAndCleanup(true);
+        
+        wraithButton->setEnabled(true);
     }
 
     void showCollectRewardWrapper() {
@@ -54,10 +65,14 @@ class $modify(TheWraith, SecretLayer5) {
         // Show soggycat after 1 second
         cocos2d::CCDelayTime* delay = cocos2d::CCDelayTime::create(2);
         cocos2d::CCCallFunc* call = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::showSoggyCat));
+        cocos2d::CCDelayTime* shortDelay = cocos2d::CCDelayTime::create(0.125f);
+        cocos2d::CCCallFunc* closeRewards = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::closeSog));
 
         cocos2d::CCSequence* sequence = cocos2d::CCSequence::create(
             delay,
             call,
+            shortDelay,
+            closeRewards,
             nullptr
         );
 
@@ -82,7 +97,8 @@ class $modify(TheWraith, SecretLayer5) {
             );
 
             cocos2d::CCDirector::sharedDirector()->getRunningScene()->runAction(sequence);
-        } else {
+        }
+        else {
             SecretLayer5::onlineRewardStatusFailed();
         }
     }

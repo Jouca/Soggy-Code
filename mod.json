@@ -10,10 +10,13 @@
 	"name": "Soggy Code",
 	"version": "1.0.0",
 	"developer": "Jouca",
-	"description": "",
+	"description": "Joke mod about writting soggy on The Wraith",
 	"tags": [
         "joke"
     ],
+	"links": {
+		"source": "https://github.com/Jouca/Soggy-Code"
+	},
 	"resources": {
 		"sprites": [
             "resources/*.png"

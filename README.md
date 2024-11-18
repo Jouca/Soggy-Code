@@ -7,7 +7,7 @@
 <img src="https://img.shields.io/github/created-at/Jouca/Soggy-Code?style=for-the-badge" style="text-align: center;"></img>
 
 **By [Jouca](https://github.com/Jouca)**
-A Geometry Dash Mod showing a Soggy when using it on The Wraith
+A Geometry Dash Mod showing a Soggy when using the code "soggy" on The Wraith
 ![Mod Example](resources/example.gif)
 
 ## Libraries Used

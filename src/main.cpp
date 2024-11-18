@@ -8,7 +8,7 @@ using namespace geode::prelude;
 
 class $modify(TheWraith, SecretLayer5) {
     struct Fields {
-        gd::string text = "";
+        std::string text = "";
     };
 
     void onSubmit(cocos2d::CCObject* sender) {

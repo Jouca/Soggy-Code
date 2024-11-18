@@ -8,7 +8,7 @@
 
 **By [Jouca](https://github.com/Jouca)**
 A Geometry Dash Mod showing a Soggy when using it on The Wraith
-![Mod Example](resources/Screenshot_1.png)
+![Mod Example](resources/example.png)
 
 ## Libraries Used
 - [Geode](https://github.com/geode-sdk/geode)

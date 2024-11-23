@@ -64,12 +64,10 @@ class $modify(TheWraith, SecretLayer5) {
 
     void closeSog() {
         CCNode* rewardPage = static_cast<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
-        CCLayer* layer = static_cast<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
-        CCMenuItemSpriteExtra* wraithButton = static_cast<CCMenuItemSpriteExtra*>(this->getChildByType<CCMenu>(0)->getChildren()->lastObject());
 
         rewardPage->removeFromParentAndCleanup(true);
 
-        wraithButton->setEnabled(true);
+        this->m_wraithButton->setEnabled(true);
     }
 
     void showCollectRewardWrapper() {

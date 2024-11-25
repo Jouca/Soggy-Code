@@ -41,11 +41,11 @@ class $modify(TheWraith, SecretLayer5) {
         white->removeFromParentAndCleanup(true);
     }
 
-    void showSoggyCat() {
+    void showSoggyCatWithJumpscare() {
         auto winSize = CCDirector::sharedDirector()->getWinSize();
         CCNode* rewardPage = as<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
         CCLayer* layer = as<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
-        
+
         CCLayerColor* white = CCLayerColor::create(ccc4(255, 255, 255, 255), winSize.width, winSize.height);
         white->setID("white"_spr);
 
@@ -60,6 +60,18 @@ class $modify(TheWraith, SecretLayer5) {
 
         layer->addChild(white, 10);
         layer->addChild(sprite, 10);
+    }
+
+    void showSoggyCat() {
+        auto winSize = CCDirector::sharedDirector()->getWinSize();
+        CCSprite* sprite = CCSprite::create("soggycat.png"_spr);
+        sprite->setPosition(ccp(winSize.width / 2, (winSize.height / 2) + 69));
+        sprite->setScale(0.2f);
+
+        CCNode* rewardPage = as<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
+        CCLayer* layer = as<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
+        layer->addChild(sprite);
+        this->m_wraithButton->setEnabled(true);
     }
 
     void closeSog() {
@@ -81,16 +93,27 @@ class $modify(TheWraith, SecretLayer5) {
 
         // Show soggycat after 1 second
         cocos2d::CCDelayTime* delay = cocos2d::CCDelayTime::create(2);
-        cocos2d::CCCallFunc* call = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::showSoggyCat));
-        cocos2d::CCCallFunc* closeRewards = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::closeSog));
+        cocos2d::CCSequence* sequence;
+        if (Mod::get()->getSettingValue<bool>("jumpscare")) {
+            cocos2d::CCCallFunc* call = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::showSoggyCatWithJumpscare));
+            cocos2d::CCCallFunc* closeRewards = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::closeSog));
 
-        cocos2d::CCSequence* sequence = cocos2d::CCSequence::create(
-            delay,
-            call,
-            cocos2d::CCDelayTime::create(0.5f),
-            closeRewards,
-            nullptr
-        );
+            sequence = cocos2d::CCSequence::create(
+                delay,
+                call,
+                cocos2d::CCDelayTime::create(0.3f),
+                closeRewards,
+                nullptr
+            );
+        } else {
+            cocos2d::CCCallFunc* call = cocos2d::CCCallFunc::create(this, callfunc_selector(TheWraith::showSoggyCat));
+
+            sequence = cocos2d::CCSequence::create(
+                delay,
+                call,
+                nullptr
+            );
+        }
 
         cocos2d::CCDirector::sharedDirector()->getRunningScene()->runAction(sequence);
     }

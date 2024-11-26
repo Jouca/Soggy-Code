@@ -4,3 +4,6 @@ A Geometry Dash Mod showing a Soggy when using the code "soggy" on The Wraith
 
 # Credits
 * [Jouca](https://x.com/JoucaJouca)
+
+# Contributors
+* [TimeStepYT](https://github.com/TimeStepYT)

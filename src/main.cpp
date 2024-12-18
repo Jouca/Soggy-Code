@@ -32,10 +32,10 @@ class $modify(TheWraith, SecretLayer5) {
     }
 
     void deleteWhite(float dt) {
-        CCNode* rewardPage = static_cast<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
-        CCLayer* layer = static_cast<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
-        CCSprite* sog = static_cast<CCSprite*>(layer->getChildByID("sog"_spr));
-        CCSprite* white = static_cast<CCSprite*>(layer->getChildByID("white"_spr));
+        RewardUnlockLayer* rewardPage = CCDirector::sharedDirector()->getRunningScene()->getChildByType<RewardUnlockLayer>(0);
+        if (!rewardPage) return;
+        CCSprite* sog = static_cast<CCSprite*>(rewardPage->m_mainLayer->getChildByID("sog"_spr));
+        CCSprite* white = static_cast<CCSprite*>(rewardPage->m_mainLayer->getChildByID("white"_spr));
 
         sog->setVisible(true);
         white->removeFromParentAndCleanup(true);
@@ -43,8 +43,8 @@ class $modify(TheWraith, SecretLayer5) {
 
     void showSoggyCatWithJumpscare() {
         auto winSize = CCDirector::sharedDirector()->getWinSize();
-        CCNode* rewardPage = as<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
-        CCLayer* layer = as<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
+        RewardUnlockLayer* rewardPage = CCDirector::sharedDirector()->getRunningScene()->getChildByType<RewardUnlockLayer>(0);
+        if (!rewardPage) return;
 
         CCLayerColor* white = CCLayerColor::create(ccc4(255, 255, 255, 255), winSize.width, winSize.height);
         white->setID("white"_spr);
@@ -58,8 +58,8 @@ class $modify(TheWraith, SecretLayer5) {
 
         schedule(schedule_selector(TheWraith::deleteWhite), 0, 0, 0.125f);
 
-        layer->addChild(white, 10);
-        layer->addChild(sprite, 10);
+        rewardPage->m_mainLayer->addChild(white, 10);
+        rewardPage->m_mainLayer->addChild(sprite, 10);
     }
 
     void showSoggyCat() {
@@ -68,14 +68,15 @@ class $modify(TheWraith, SecretLayer5) {
         sprite->setPosition(ccp(winSize.width / 2, (winSize.height / 2) + 69));
         sprite->setScale(0.2f);
 
-        CCNode* rewardPage = as<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
-        CCLayer* layer = as<CCLayer*>(rewardPage->getChildren()->objectAtIndex(0));
-        layer->addChild(sprite);
+        RewardUnlockLayer* rewardPage = CCDirector::sharedDirector()->getRunningScene()->getChildByType<RewardUnlockLayer>(0);
+        if (!rewardPage) return;
+        rewardPage->m_mainLayer->addChild(sprite);
         this->m_wraithButton->setEnabled(true);
     }
 
     void closeSog() {
-        CCNode* rewardPage = static_cast<CCNode*>(cocos2d::CCDirector::sharedDirector()->getRunningScene()->getChildren()->objectAtIndex(1));
+        RewardUnlockLayer* rewardPage = CCDirector::sharedDirector()->getRunningScene()->getChildByType<RewardUnlockLayer>(0);
+        if (!rewardPage) return;
 
         rewardPage->removeFromParentAndCleanup(true);
 
